@@ -7,6 +7,9 @@ export default {
     babelrc: false,
     presets: [
       ['es2015', { modules: false }]
+    ],
+    plugins: [
+      'external-helpers'
     ]
   })],
   dest: 'index.js'
