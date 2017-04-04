@@ -1,7 +1,7 @@
 {
   "name": "cathedra",
   "version": "0.0.1",
-  "description": "Microbenchmark tool",
+  "description": "A microbenchmarking tool",
   "main": "index.js",
   "scripts": {
     "build": "rollup -c rollup.config.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bali182/json-schema-visitor.git"
+    "url": "git+https://github.com/bali182/cathedra.git"
   },
   "author": "Balazs Edes",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bali182/json-schema-visitor/issues"
+    "url": "https://github.com/bali182/cathedra/issues"
   },
-  "homepage": "https://github.com/bali182/json-schema-visitor#readme",
+  "homepage": "https://github.com/bali182/cathedra#readme",
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-eslint": "^7.2.1",
@@ -31,8 +31,5 @@
     "jest": "^19.0.2",
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1"
-  },
-  "dependencies": {
-    "chalk": "^1.1.3"
   }
 }
