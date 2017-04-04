@@ -1,28 +1,28 @@
-import defaultPresenter from './presenter'
-import defaultRun from './run'
-import { now as defaultNow, noop, time } from './utils'
+import { SUITE_DEFAULTS, SUITE_SYMBOL } from './constants'
+import { isFunction, assert, isObject, isSuite, isBenchmark, merge } from './common'
+import benchmark from './benchmark'
+import run from './run'
 
-const suite = (...benchmarks) => ({
-  name = 'unknown',
-  presenter = defaultPresenter,
-  now = defaultNow,
-  run = defaultRun,
-  before = noop,
-  after = noop,
-  initialize = () => [],
-  until = time(5000)
-}) => {
-  const args = initialize() || []
-
-  before(...args)
-
-  const results = benchmarks
-    .map(method => ({ method, until, now, args }))
-    .map(run)
-
-  after(...args)
-
-  presenter(name, results)
+const toExecutable = input => {
+  if (isSuite(input) || isBenchmark(input)) {
+    return input
+  } else if (isFunction(input)) {
+    return benchmark(input)
+  }
+  throw new TypeError(`suite, benchmark or function expected, got ${input} instead`)
 }
 
-export default suite
+const fromConfig = suiteConfig => new Proxy(suiteConfig, {
+  apply(originalConfig, self, argArr) {
+    const args = Array.from(argArr)
+    if (args.length === 0) {
+      return run(originalConfig)
+    }
+    args.forEach((arg, i) => assert(isObject(arg), `argument ${i + 1} is not an object: ${arg}`, TypeError))
+    return fromConfig(merge({ [SUITE_SYMBOL]: true }, SUITE_DEFAULTS, ...args))
+  }
+})
+
+const wrapExecutables = fns => fromConfig(merge({ children: fns, [SUITE_SYMBOL]: true }, SUITE_DEFAULTS))
+
+export default (...input) => wrapExecutables(input.map(toExecutable))

@@ -1,7 +1,7 @@
 import { suite, time } from '../src/index'
 
 describe('sample suite', () => {
-  it('sample test', () => {
+  xit('sample test', () => {
     const removeBySliceAndConcat = (array, index) => array.slice(0, index).concat(array.slice(index + 1))
 
     const removeBySliceAndSpread = (array, index) => [...array.slice(0, index), ...array.slice(index + 1)]

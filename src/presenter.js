@@ -1,5 +1,5 @@
 import { green, red, yellow } from 'chalk'
-import { maxBy, minBy } from './utils'
+import { maxBy, minBy } from './common'
 
 export default (name, results) => {
   const opsPerSec = ({ operations, pureTime }) => operations / (pureTime / 1000)
