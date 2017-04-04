@@ -1,5 +1,4 @@
-import { now as defaultNow, time, omit, isBenchmark, isSuite, merge } from './common'
-import { SUITE_SYMBOL } from './constants'
+import { now as defaultNow, time, omit, isBenchmark, isSuite, merge, configOf, extendConfig } from './common'
 
 const runRepeatedly = ({ fn, until, now, args }) => {
   let operations = 0
@@ -30,9 +29,9 @@ const runRepeatedly = ({ fn, until, now, args }) => {
   }
 }
 
-const augmentConfig = config => {
-  const { now, name } = config
-  return merge(config, {
+const augmentConfig = input => {
+  const { now, name } = configOf(input)
+  return extendConfig(input, {
     now: now || defaultNow,
     name: name || 'unknown',
     until: time(5000)
@@ -41,8 +40,8 @@ const augmentConfig = config => {
 
 let runAny = null
 
-const runBenchmark = cfg => {
-  const config = augmentConfig(cfg)
+const runBenchmark = input => {
+  const config = configOf(augmentConfig(input))
   const { initialize, before, after, fn, now, until } = config
 
   const args = initialize() || []
@@ -54,20 +53,27 @@ const runBenchmark = cfg => {
   return merge(config, results)
 }
 
-const runSuite = cfg => {
-  const { children } = cfg
-  const childCfg = omit(cfg, [SUITE_SYMBOL, 'fns'])
-  const results = children.forEach(child => runAny(merge(childCfg, child)))
+const runSuite = input => {
+  const config = configOf(input)
+  const { children } = config
+  const childCfg = omit(config, ['fns'])
+  const results = children.forEach(child => {
+    extendConfig(childCfg, configOf(child))
+    runAny(child)
+  })
   return merge(childCfg, { children: results })
 }
 
-runAny = cfg => {
-  if (isBenchmark(cfg)) {
-    return runBenchmark(cfg)
-  } else if (isSuite(cfg)) {
-    return runSuite(cfg)
+runAny = input => {
+  console.log(Object.keys(configOf(input)))
+  if (isBenchmark(input)) {
+    return runBenchmark(input)
+  } else if (isSuite(input)) {
+    return runSuite(input)
   }
-  throw new TypeError(`expected benchmark or suite, got ${cfg} instead`)
+  throw new TypeError(`expected benchmark or suite, got ${input} instead`)
 }
 
-export default config => presenter => presenter(runAny(config))
+const run = input => runAny(input)
+
+export default run

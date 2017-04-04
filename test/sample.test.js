@@ -1,7 +1,7 @@
 import { suite, time } from '../src/index'
 
 describe('sample suite', () => {
-  xit('sample test', () => {
+  it('sample test', () => {
     const removeBySliceAndConcat = (array, index) => array.slice(0, index).concat(array.slice(index + 1))
 
     const removeBySliceAndSpread = (array, index) => [...array.slice(0, index), ...array.slice(index + 1)]
@@ -21,7 +21,7 @@ describe('sample suite', () => {
       removeByFilter
     )
 
-    mathSuite({
+    const firstElementSuite = mathSuite({
       name: 'remove 0th element',
       until: time(2000),
       initialize: () => [
@@ -30,7 +30,9 @@ describe('sample suite', () => {
       ]
     })
 
-    mathSuite({
+    firstElementSuite()
+
+    /*mathSuite({
       name: 'remove last element',
       until: time(2000),
       initialize: () => [
@@ -46,6 +48,6 @@ describe('sample suite', () => {
         new Array(1000000).fill(0).map(Math.random),
         Math.round(1000000 / 2)
       ]
-    })
+    })*/
   })
 })

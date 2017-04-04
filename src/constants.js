@@ -1,6 +1,4 @@
-export const BENCHMARK_SYMBOL = Symbol('Benchmark')
-
-export const SUITE_SYMBOL = Symbol('Suite')
+export const CATHEDRA_CONFIG = Symbol('CATHEDRA_CONFIG')
 
 const COMMON_DEFAULTS = {
   name: 'unknown',
@@ -8,6 +6,10 @@ const COMMON_DEFAULTS = {
   after: () => undefined,
   initialize: () => [],
 }
+
+export const IS_BENCHMARK_KEY = 'isBenchmark'
+
+export const IS_SUITE_KEY = 'isSuite'
 
 export const BENCHMARK_DEFAULTS = COMMON_DEFAULTS
 

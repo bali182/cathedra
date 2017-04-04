@@ -73,7 +73,6 @@
     ],
     "eqeqeq": "error",
     "no-caller": "error",
-    "no-else-return": "error",
     "no-empty-function": "error",
     "no-empty-pattern": "error",
     "no-eq-null": "error",

@@ -1,22 +1,21 @@
-import { SUITE_DEFAULTS, SUITE_SYMBOL, BENCHMARK_DEFAULTS, BENCHMARK_SYMBOL } from './constants'
-import { isFunction, assert, isObject, isSuite, isBenchmark, merge } from './common'
+import { SUITE_DEFAULTS, BENCHMARK_DEFAULTS, IS_BENCHMARK_KEY, IS_SUITE_KEY } from './constants'
+import { isFunction, assert, isObject, isSuite, isBenchmark, merge, extendConfig, configOf } from './common'
 import run from './run'
 
-const fromConfig = (config, symbol, defaults) => new Proxy(config, {
-  apply(originalConfig, self, argArr) {
-    const args = Array.from(argArr)
+const fromConfig = config => {
+  const runnable = (...args) => {
     if (args.length === 0) {
-      return run(originalConfig)
+      return run(configOf(runnable))
+    } else {
+      args.forEach(arg => assert(isObject(arg), `expected object, got ${arg} of type ${typeof arg} instead`, TypeError))
+      return extendConfig(runnable, ...args)
     }
-    args.forEach(arg => assert(isObject(arg), `expected object, got ${arg} of type ${typeof arg} instead`, TypeError))
-    return fromConfig(merge({ [symbol]: true }, defaults, ...args), symbol, defaults)
   }
-})
+  return extendConfig(runnable, config)
+}
 
 const fromFunction = fn => fromConfig(
-  merge({ fn, [BENCHMARK_SYMBOL]: true }, BENCHMARK_DEFAULTS),
-  BENCHMARK_SYMBOL,
-  BENCHMARK_DEFAULTS
+  merge(BENCHMARK_DEFAULTS, { fn, [IS_BENCHMARK_KEY]: true })
 )
 
 export const benchmark = input => {
@@ -41,9 +40,7 @@ const toBenchmarkOrSuite = input => {
 }
 
 const fromBenchmarksOrSuites = fns => fromConfig(
-  merge({ children: fns, [SUITE_SYMBOL]: true }, SUITE_DEFAULTS),
-  SUITE_SYMBOL,
-  SUITE_DEFAULTS
+  merge(SUITE_DEFAULTS, { children: fns, [IS_SUITE_KEY]: true })
 )
 
 export const suite = (...input) => fromBenchmarksOrSuites(input.map(toBenchmarkOrSuite))
