@@ -1,11 +1,38 @@
-import defaultRun from './run'
 import { now as defaultNow, time, omit, isBenchmark, isSuite, merge } from './common'
 import { SUITE_SYMBOL } from './constants'
 
+const runRepeatedly = ({ fn, until, now, args }) => {
+  let operations = 0
+  let pureTime = 0
+  let fullTime = 0
+  const startTime = now()
+
+  while (true) { // eslint-disable-line no-constant-condition
+    const before = now()
+    fn(...args)
+    const after = now()
+
+    const runTime = after - before
+
+    pureTime += runTime
+    operations += 1
+    fullTime = after - startTime
+
+    if (!until(operations, fullTime)) {
+      break
+    }
+  }
+
+  return {
+    operations,
+    pureTime,
+    fullTime
+  }
+}
+
 const augmentConfig = config => {
-  const { run, now, name } = config
+  const { now, name } = config
   return merge(config, {
-    run: run || defaultRun,
     now: now || defaultNow,
     name: name || 'unknown',
     until: time(5000)
@@ -16,12 +43,12 @@ let runAny = null
 
 const runBenchmark = cfg => {
   const config = augmentConfig(cfg)
-  const { initialize, run, before, after } = config
+  const { initialize, before, after, fn, now, until } = config
 
   const args = initialize() || []
 
   before(...args)
-  const results = run(merge(config, { args }))
+  const results = runRepeatedly({ fn, now, until, args })
   after(...args)
 
   return merge(config, results)
