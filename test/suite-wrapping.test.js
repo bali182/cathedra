@@ -1,7 +1,7 @@
 import { suite, benchmark } from '../src/benchmark'
 import { configOf, isSuite, isBenchmark } from '../src/common'
 
-describe('testing wrapping in suite() and configuration after', () => {
+describe('wrapping suites', () => {
   const a = () => { /* empty */ }
   const b = () => { /* empty */ }
   const c = () => { /* empty */ }
@@ -63,5 +63,33 @@ describe('testing wrapping in suite() and configuration after', () => {
     // overriden
     expect(config.name).toBe(thirdAddition.name)
     expect(config.initialize).toBe(firstAddition.initialize)
+  })
+
+  it('should build a tree from suites and benchmarks', () => {
+    const s = suite(
+      suite(
+        a,
+        benchmark(b),
+        suite(c)
+      ),
+      a
+    )
+    const { children: firstLvlChildren } = configOf(s)
+    const [secondLvlSuite, secondLvlABench] = firstLvlChildren
+
+    expect(isSuite(secondLvlSuite)).toBe(true)
+    expect(isBenchmark(secondLvlABench)).toBe(true)
+
+    const { children: secondLvlChildren } = configOf(secondLvlSuite)
+    const [thirdLvlABench, thirdLvlBBench, thirdLvlSuite] = secondLvlChildren
+
+    expect(isBenchmark(thirdLvlABench)).toBe(true)
+    expect(isBenchmark(thirdLvlBBench)).toBe(true)
+    expect(isSuite(thirdLvlSuite)).toBe(true)
+
+    const { children: thirdLvlChildren } = configOf(thirdLvlSuite)
+    const [fourthLvlCBench] = thirdLvlChildren
+
+    expect(isBenchmark(fourthLvlCBench)).toBe(true)
   })
 })

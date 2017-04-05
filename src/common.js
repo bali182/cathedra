@@ -29,12 +29,14 @@ export const isBenchmark = hasConfigKey(IS_BENCHMARK_KEY)
 export const isSuite = hasConfigKey(IS_SUITE_KEY)
 
 export const extendConfig = (input, ...configs) => {
-  if (isObject(input) || isFunction(input)) {
+  if (isFunction(input)) {
     const config = configOf(input) || {}
     const newConfig = Object.assign(config, ...configs)
     input[CATHEDRA_CONFIG] = newConfig
+    return input
+  } else {
+    throw new TypeError(`expected function, got ${input} instead`)
   }
-  return input
 }
 
 export const omit = (object, keys) => {

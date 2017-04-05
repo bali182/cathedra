@@ -38,7 +38,7 @@ const augmentConfig = input => {
   })
 }
 
-let runAny = null
+let run = null
 
 const runBenchmark = input => {
   const config = configOf(augmentConfig(input))
@@ -59,13 +59,12 @@ const runSuite = input => {
   const childCfg = omit(config, ['fns'])
   const results = children.forEach(child => {
     extendConfig(childCfg, configOf(child))
-    runAny(child)
+    run(child)
   })
   return merge(childCfg, { children: results })
 }
 
-runAny = input => {
-  console.log(Object.keys(configOf(input)))
+run = input => {
   if (isBenchmark(input)) {
     return runBenchmark(input)
   } else if (isSuite(input)) {
@@ -73,7 +72,5 @@ runAny = input => {
   }
   throw new TypeError(`expected benchmark or suite, got ${input} instead`)
 }
-
-const run = input => runAny(input)
 
 export default run

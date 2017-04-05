@@ -1,11 +1,11 @@
 import { SUITE_DEFAULTS, BENCHMARK_DEFAULTS, IS_BENCHMARK_KEY, IS_SUITE_KEY } from './constants'
-import { isFunction, assert, isObject, isSuite, isBenchmark, merge, extendConfig, configOf } from './common'
+import { isFunction, assert, isObject, isSuite, isBenchmark, merge, extendConfig } from './common'
 import run from './run'
 
 const fromConfig = config => {
   const runnable = (...args) => {
     if (args.length === 0) {
-      return run(configOf(runnable))
+      return run(runnable)
     } else {
       args.forEach(arg => assert(isObject(arg), `expected object, got ${arg} of type ${typeof arg} instead`, TypeError))
       return extendConfig(runnable, ...args)

@@ -1,8 +1,7 @@
 import { benchmark } from '../src/benchmark'
 import { configOf, isBenchmark } from '../src/common'
 
-
-describe('testing function wrapping in benchmark() and configuration after', () => {
+describe('wrapping benchmarks', () => {
   const a = () => { /* empty */ }
   
   it('should recognize as benchmark after wrapping', () => {
