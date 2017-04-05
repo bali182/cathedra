@@ -28,7 +28,7 @@ export const isBenchmark = hasConfigKey(IS_BENCHMARK_KEY)
 
 export const isSuite = hasConfigKey(IS_SUITE_KEY)
 
-export const extendConfig = input => (...configs) => {
+export const extendConfig = (input, ...configs) => {
   if (isObject(input) || isFunction(input)) {
     const config = configOf(input) || {}
     const newConfig = Object.assign(config, ...configs)

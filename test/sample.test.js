@@ -1,6 +1,6 @@
 import { suite, time } from '../src/index'
 
-describe('sample suite', () => {
+xdescribe('sample suite', () => {
   it('sample test', () => {
     const removeBySliceAndConcat = (array, index) => array.slice(0, index).concat(array.slice(index + 1))
 

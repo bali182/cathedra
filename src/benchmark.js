@@ -14,9 +14,12 @@ const fromConfig = config => {
   return extendConfig(runnable, config)
 }
 
-const fromFunction = fn => fromConfig(
-  merge(BENCHMARK_DEFAULTS, { fn, [IS_BENCHMARK_KEY]: true })
-)
+const fromFunction = fn => {
+  const name = fn.name === '' ? BENCHMARK_DEFAULTS.name : fn.name
+  const config = merge(BENCHMARK_DEFAULTS, { fn, name, [IS_BENCHMARK_KEY]: true })
+  return fromConfig(config)
+}
+
 
 export const benchmark = input => {
   if (isBenchmark(input)) {
