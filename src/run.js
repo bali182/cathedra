@@ -1,4 +1,5 @@
-import { now as defaultNow, time, omit, isBenchmark, isSuite, merge, configOf, extendConfig } from './common'
+import { now as defaultNow, time, omit, isBenchmark, isSuite, isDefined, merge, configOf, extendConfig } from './common'
+import { FUNCTION_FIELDS } from './constants'
 
 const runRepeatedly = ({ fn, until, now, args }) => {
   let operations = 0
@@ -22,19 +23,15 @@ const runRepeatedly = ({ fn, until, now, args }) => {
     }
   }
 
-  return {
-    operations,
-    pureTime,
-    fullTime
-  }
+  return { operations, pureTime, fullTime }
 }
 
 const augmentConfig = input => {
-  const { now, name } = configOf(input)
+  const { now, name, until } = configOf(input)
   return extendConfig(input, {
-    now: now || defaultNow,
-    name: name || 'unknown',
-    until: time(5000)
+    now: isDefined(now) ? now : defaultNow,
+    name: isDefined(name) ? name : 'unknown',
+    until: isDefined(until) ? until : time(5000)
   })
 }
 
@@ -50,13 +47,13 @@ const runBenchmark = input => {
   const results = runRepeatedly({ fn, now, until, args })
   after(...args)
 
-  return merge(config, results)
+  return merge(omit(config, FUNCTION_FIELDS), results)
 }
 
 const runSuite = input => {
   const config = configOf(input)
   const { children } = config
-  const childCfg = omit(config, ['fns'])
+  const childCfg = omit(config, ['children'])
   const results = children.forEach(child => {
     extendConfig(childCfg, configOf(child))
     run(child)

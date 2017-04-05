@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "lint": "eslint **/*.js --config .eslintrc",
-    "test": "jest",
+    "test": "jest --no-cache",
     "prepublish": "npm run lint && npm test && npm run build"
   },
   "repository": {

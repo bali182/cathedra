@@ -3,14 +3,18 @@ import { time } from '../src/common'
 
 describe('running benchmarks', () => {
   const roundRandom = () => Math.round(Math.random() * 10)
-  /*const squareRandom = () => Math.sqrt(Math.random() * 10)
-  const powRandom = () => Math.pow(Math.random() * 10)*/
 
-  it('should run simple benchmark', () => {
-    const extraConfig = { until: time(100) }
+  it('should run roundRandom and have appropriate results', () => {
     const bench = benchmark(roundRandom)({ until: time(100) })
-    const results = bench()
+    const { name, isBenchmark, operations, pureTime, fullTime } = bench()
 
-    expect(results.until).toBe(extraConfig.until)
+    expect(name).toBe(roundRandom.name)
+    expect(isBenchmark).toBe(true)
+    expect(typeof operations).toBe('number')
+    expect(typeof pureTime).toBe('number')
+    expect(typeof fullTime).toBe('number')
+
+    expect(pureTime).toBeLessThanOrEqual(100)
+    expect(fullTime).toBeGreaterThanOrEqual(100)
   })
 })

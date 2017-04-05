@@ -14,3 +14,5 @@ export const IS_SUITE_KEY = 'isSuite'
 export const BENCHMARK_DEFAULTS = COMMON_DEFAULTS
 
 export const SUITE_DEFAULTS = COMMON_DEFAULTS
+
+export const FUNCTION_FIELDS = ['initialize', 'before', 'after', 'fn', 'until', 'now']
