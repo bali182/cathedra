@@ -47,18 +47,19 @@ const runBenchmark = input => {
   const results = runRepeatedly({ fn, now, until, args })
   after(...args)
 
-  return merge(omit(config, FUNCTION_FIELDS), results)
+  return merge(omit(config, ...FUNCTION_FIELDS), results)
 }
 
 const runSuite = input => {
   const config = configOf(input)
   const { children } = config
-  const childCfg = omit(config, ['children'])
-  const results = children.forEach(child => {
-    extendConfig(childCfg, configOf(child))
-    run(child)
+  const results = children.map(child => {
+    const originalConfig = configOf(child)
+    extendConfig(child, omit(config, 'name', 'isSuite', 'children'), originalConfig)
+    const childResults = run(child)
+    return omit(merge(configOf(child), childResults), ...FUNCTION_FIELDS)
   })
-  return merge(childCfg, { children: results })
+  return merge(omit(config, ...FUNCTION_FIELDS), { children: results })
 }
 
 run = input => {

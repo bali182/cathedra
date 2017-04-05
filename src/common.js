@@ -39,7 +39,7 @@ export const extendConfig = (input, ...configs) => {
   }
 }
 
-export const omit = (object, keys) => {
+export const omit = (object, ...keys) => {
   const result = {}
   Object.keys(object).filter(key => !keys.includes(key)).forEach(key => {
     result[key] = object[key]
