@@ -5,6 +5,5 @@ test
 .eslintignore
 .eslintrc
 .gitignore
-.npmignore
 .travis.yml
 rollup.config.js
