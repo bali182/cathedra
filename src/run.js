@@ -51,15 +51,15 @@ const runBenchmark = input => {
 }
 
 const runSuite = input => {
-  const config = configOf(input)
-  const { children } = config
+  const parentConfig = configOf(input)
+  const { children } = parentConfig
   const results = children.map(child => {
-    const originalConfig = configOf(child)
-    extendConfig(child, omit(config, 'name', 'isSuite', 'children'), originalConfig)
+    const originalChildConfig = configOf(child)
+    extendConfig(child, omit(parentConfig, 'name', 'isSuite', 'children'), originalChildConfig)
     const childResults = run(child)
     return omit(merge(configOf(child), childResults), ...FUNCTION_FIELDS)
   })
-  return merge(omit(config, ...FUNCTION_FIELDS), { children: results })
+  return merge(omit(parentConfig, ...FUNCTION_FIELDS), { children: results })
 }
 
 run = input => {

@@ -77,10 +77,10 @@ describe('running suites', () => {
 
     assertSuite('unknown', 2)(firstLvlSuiteRes)
 
-    const [secondLvlSuiteRes,/*secondLvlBenchRes*/] = firstLvlSuiteRes.children
+    const [secondLvlSuiteRes, secondLvlBenchRes] = firstLvlSuiteRes.children
 
     assertSuite('unknown', 2)(secondLvlSuiteRes)
-    //assertBenchmark('hello sqrt', 200)(secondLvlBenchRes)
+    assertBenchmark('hello sqrt', 200)(secondLvlBenchRes)
 
     const [thirdLvlBenchRes, thirdLvlSuiteRes] = secondLvlSuiteRes.children
 

@@ -8,7 +8,20 @@ export const isObject = input => input instanceof Object && !isArray(input) && !
 
 export const isDefined = input => input !== null && typeof input !== 'undefined'
 
-export const merge = (...objects) => Object.assign({}, ...objects)
+export const merge = (...objects) => {
+  const result = {}
+  for (const object of objects) {
+    const keys = Object.keys(object)
+    const symbols = Object.getOwnPropertySymbols(object)
+    for (const key of keys) {
+      result[key] = object[key]
+    }
+    for (const symbol of symbols) {
+      result[symbol] = object[symbol]
+    }
+  }
+  return result
+}
 
 export const time = amount => (_, totalTime) => totalTime < amount
 
@@ -31,7 +44,7 @@ export const isSuite = hasConfigKey(IS_SUITE_KEY)
 export const extendConfig = (input, ...configs) => {
   if (isFunction(input)) {
     const config = configOf(input) || {}
-    const newConfig = Object.assign(config, ...configs)
+    const newConfig = merge(config, ...configs)
     input[CATHEDRA_CONFIG] = newConfig
     return input
   } else {

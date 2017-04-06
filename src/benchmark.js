@@ -20,7 +20,6 @@ const fromFunction = fn => {
   return fromConfig(config)
 }
 
-
 export const benchmark = input => {
   if (isBenchmark(input)) {
     return input
@@ -32,7 +31,6 @@ export const benchmark = input => {
   throw new TypeError(`expected either configuration object or function, got ${input} of type ${typeof input} instead`)
 }
 
-
 const toBenchmarkOrSuite = input => {
   if (isSuite(input) || isBenchmark(input)) {
     return input
@@ -42,8 +40,8 @@ const toBenchmarkOrSuite = input => {
   throw new TypeError(`expected suite, benchmark or function, got ${input} of type ${typeof input} instead`)
 }
 
-const fromBenchmarksOrSuites = fns => fromConfig(
-  merge(SUITE_DEFAULTS, { children: fns, [IS_SUITE_KEY]: true })
+const fromBenchmarksOrSuites = children => fromConfig(
+  merge(SUITE_DEFAULTS, { children, [IS_SUITE_KEY]: true })
 )
 
 export const suite = (...input) => fromBenchmarksOrSuites(input.map(toBenchmarkOrSuite))

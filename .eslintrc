@@ -15,6 +15,12 @@
   "parser": "babel-eslint",
   "rules": {
     "no-console": "off",
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1
+      }
+    ],
     "no-cond-assign": "error",
     "no-debugger": "error",
     "no-dupe-args": "error",
