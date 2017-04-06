@@ -1,8 +1,0 @@
-src
-test
-rollup.config.js
-.babelrc
-.eslintignore
-.eslintrc
-.gitignore
-.travis.yml
