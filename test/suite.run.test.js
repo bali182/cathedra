@@ -1,5 +1,5 @@
 import { suite, benchmark } from '../src/benchmark'
-import { time } from '../src/common'
+import { milliseconds } from '../src/common'
 
 describe('running suites', () => {
   const roundRandom = () => Math.round(Math.random() * 10)
@@ -29,7 +29,7 @@ describe('running suites', () => {
   }
 
   it('should run suite with one benchmark', () => {
-    const configuredSuite = suite(roundRandom)({ until: time(100), name: 'random' })
+    const configuredSuite = suite(roundRandom)({ until: milliseconds(100), name: 'random' })
     const result = configuredSuite()
 
     assertSuite('random', 1)(result)
@@ -46,7 +46,7 @@ describe('running suites', () => {
       powRandom
     )
 
-    const configuredSuite = s({ until: time(100), name: 'math' })
+    const configuredSuite = s({ until: milliseconds(100), name: 'math' })
     const result = configuredSuite()
 
     assertSuite('math', 3)(result)
@@ -65,9 +65,9 @@ describe('running suites', () => {
           roundRandom,
           suite(powRandom)({ name: 'veryNested' })
         ),
-        benchmark(sqrtRandom)({ until: time(200), name: 'hello sqrt' })
+        benchmark(sqrtRandom)({ until: milliseconds(200), name: 'hello sqrt' })
       )
-    )({ until: time(100), name: 'nested' })
+    )({ until: milliseconds(100), name: 'nested' })
 
     const result = configuredSuite()
 

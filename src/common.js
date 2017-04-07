@@ -23,7 +23,7 @@ export const merge = (...objects) => {
   return result
 }
 
-export const time = amount => (_, totalTime) => totalTime < amount
+export const milliseconds = amount => (_, totalTime) => totalTime < amount
 
 export const operations = amount => ops => ops < amount
 

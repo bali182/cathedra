@@ -1,4 +1,4 @@
-import { now as defaultNow, time, omit, isBenchmark, isSuite, isDefined, merge, configOf, extendConfig } from './common'
+import { now as defaultNow, milliseconds, omit, isBenchmark, isSuite, isDefined, merge, configOf, extendConfig } from './common'
 import { FUNCTION_FIELDS } from './constants'
 
 const runRepeatedly = ({ fn, until, now, args }) => {
@@ -31,7 +31,7 @@ const augmentConfig = input => {
   return extendConfig(input, {
     now: isDefined(now) ? now : defaultNow,
     name: isDefined(name) ? name : 'unknown',
-    until: isDefined(until) ? until : time(5000)
+    until: isDefined(until) ? until : milliseconds(5000)
   })
 }
 

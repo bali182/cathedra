@@ -1,11 +1,11 @@
 import { benchmark } from '../src/benchmark'
-import { time } from '../src/common'
+import { milliseconds } from '../src/common'
 
 describe('running benchmarks', () => {
   const roundRandom = () => Math.round(Math.random() * 10)
 
   it('should run roundRandom and have appropriate results', () => {
-    const bench = benchmark(roundRandom)({ until: time(100) })
+    const bench = benchmark(roundRandom)({ until: milliseconds(100) })
     const { name, isBenchmark, operations, pureTime, fullTime } = bench()
 
     expect(name).toBe(roundRandom.name)

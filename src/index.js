@@ -1,2 +1,2 @@
 export { benchmark, suite } from './benchmark'
-export { operations, time } from './common'
+export { operations, milliseconds, isBenchmark, isSuite } from './common'
