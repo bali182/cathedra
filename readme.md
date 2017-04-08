@@ -2,4 +2,3 @@
 
 A microbenchmarking tool for Javascript.
 
-### Docs coming soon

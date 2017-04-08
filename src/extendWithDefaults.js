@@ -1,6 +1,6 @@
 import { configOf, isDefined, extendConfig, now as defaultNow, milliseconds } from './common'
 
-const augmentConfig = input => {
+const extendWithDefaults = input => {
   const { now, name, until, initialize, before, after } = configOf(input)
   return extendConfig(input, {
     now: isDefined(now) ? now : defaultNow,
@@ -12,4 +12,4 @@ const augmentConfig = input => {
   })
 }
 
-export default augmentConfig
+export default extendWithDefaults

@@ -1,8 +1,8 @@
 import benchmark from '../src/benchmark'
 import suite from '../src/suite'
-import { operations } from '../src/common'
+import { times } from '../src/common'
 
-describe('function calls with spies', () => {
+describe('spying on lifecycle methods', () => {
   it('should call the spy 1000 times with the given arguments', () => {
 
     const args = [42, 'foo', 'bar']
@@ -11,7 +11,7 @@ describe('function calls with spies', () => {
     const before = jasmine.createSpy('before')
     const after = jasmine.createSpy('after')
     const initialize = jasmine.createSpy('initialize', () => args).and.callThrough()
-    const until = jasmine.createSpy('until', operations(1000)).and.callThrough()
+    const until = jasmine.createSpy('until', times(1000)).and.callThrough()
 
     benchmark(benchmarkSpy)({ until, initialize, before, after })()
 
@@ -35,12 +35,12 @@ describe('function calls with spies', () => {
     const before = jasmine.createSpy('before')
     const after = jasmine.createSpy('after')
     const initialize = jasmine.createSpy('initialize', () => [42]).and.callThrough()
-    const until = jasmine.createSpy('until', operations(100)).and.callThrough()
+    const until = jasmine.createSpy('until', times(100)).and.callThrough()
 
     const beforeA = jasmine.createSpy('beforeA')
     const afterB = jasmine.createSpy('afterB')
     const initializeC = jasmine.createSpy('initializeC', () => [43]).and.callThrough()
-    const untilD = jasmine.createSpy('untilD', operations(200)).and.callThrough()
+    const untilD = jasmine.createSpy('untilD', times(200)).and.callThrough()
 
     suite(
       benchmark(a)({ before: beforeA }),

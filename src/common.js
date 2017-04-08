@@ -10,22 +10,22 @@ export const isDefined = input => input !== null && typeof input !== 'undefined'
 
 export const merge = (...objects) => {
   const result = {}
-  for (const object of objects) {
+  objects.forEach(object => {
     const keys = Object.keys(object)
     const symbols = Object.getOwnPropertySymbols(object)
-    for (const key of keys) {
+    keys.forEach(key => {
       result[key] = object[key]
-    }
-    for (const symbol of symbols) {
+    })
+    symbols.forEach(symbol => {
       result[symbol] = object[symbol]
-    }
-  }
+    })
+  })
   return result
 }
 
-export const milliseconds = amount => (_, totalTime) => totalTime < amount
+export const milliseconds = ms => (_, totalTime) => totalTime < ms
 
-export const operations = amount => ops => ops < amount
+export const times = amount => ops => ops < amount
 
 export const configOf = input => input[CATHEDRA_CONFIG]
 

@@ -15,7 +15,7 @@ const runRepeatedly = ({ fn, until, now, args }) => {
     operations += 1
     fullTime = after - startTime
 
-    if (!until(operations, fullTime)) {
+    if (!until(operations, fullTime, pureTime)) {
       break
     }
   }

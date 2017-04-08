@@ -1,10 +1,10 @@
 import { configOf, merge, omit } from './common'
 import { FUNCTION_FIELDS } from './constants'
 import runRepeatedly from './runRepeatedly'
-import augmentConfig from './augmentConfig'
+import extendWithDefaults from './extendWithDefaults'
 
 const runBenchmark = input => {
-  const config = configOf(augmentConfig(input))
+  const config = configOf(extendWithDefaults(input))
   const { initialize, before, after, fn, now, until } = config
 
   const args = initialize() || []
