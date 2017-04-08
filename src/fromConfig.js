@@ -1,5 +1,5 @@
 import run from './run'
-import { extendConfig, assert, isObject } from './common'
+import { extendConfig, configOf, merge, assert, isObject } from './common'
 
 const fromConfig = config => {
   const runnable = (...args) => {
@@ -7,7 +7,7 @@ const fromConfig = config => {
       return run(runnable)
     } else {
       args.forEach(arg => assert(isObject(arg), `expected object, got ${arg} of type ${typeof arg} instead`, TypeError))
-      return extendConfig(runnable, ...args)
+      return fromConfig(merge(configOf(runnable), ...args))
     }
   }
   return extendConfig(runnable, config)
