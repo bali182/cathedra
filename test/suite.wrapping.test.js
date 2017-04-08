@@ -30,10 +30,10 @@ describe('wrapping suites', () => {
     const config = configOf(s)
     const { children } = config
 
-    expect(config.name).toBe('unknown')
-    expect(typeof config.before).toBe('function')
-    expect(typeof config.after).toBe('function')
-    expect(typeof config.initialize).toBe('function')
+    expect(config.name).toBe('unknown suite')
+    expect(config.before).toBeUndefined()
+    expect(config.after).toBeUndefined()
+    expect(config.initialize).toBeUndefined()
     expect(Array.isArray(children)).toBe(true)
     expect(config.isSuite).toBe(true)
 
@@ -45,12 +45,12 @@ describe('wrapping suites', () => {
   it('should extend/override config on subsequent calls', () => {
     const firstAddition = { x: 1, initialize: () => { /* empty */ } }
     const secondAddition = { foo: 'bar', name: 'foo' }
-    const thirdAddition = { name: 'test' }
+    const thirdAddition = { name: 'test', after: () => { /* empty */ } }
 
     const s = suite(a)(firstAddition)(secondAddition)(thirdAddition)
     const config = configOf(s)
 
-    expect(typeof config.before).toBe('function')
+    expect(config.before).toBeUndefined()
     expect(typeof config.after).toBe('function')
     expect(typeof config.initialize).toBe('function')
     expect(Array.isArray(config.children)).toBe(true)

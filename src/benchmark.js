@@ -1,5 +1,5 @@
-import { SUITE_DEFAULTS, BENCHMARK_DEFAULTS, IS_BENCHMARK_KEY, IS_SUITE_KEY } from './constants'
-import { isFunction, assert, isObject, isSuite, isBenchmark, merge, extendConfig } from './common'
+import { DEFAULT_FN_NAME, DEFAULT_SUITE_NAME, IS_BENCHMARK_KEY, IS_SUITE_KEY } from './constants'
+import { isFunction, assert, isObject, isSuite, isBenchmark, extendConfig } from './common'
 import run from './run'
 
 const fromConfig = config => {
@@ -14,11 +14,11 @@ const fromConfig = config => {
   return extendConfig(runnable, config)
 }
 
-const fromFunction = fn => {
-  const name = fn.name === '' ? BENCHMARK_DEFAULTS.name : fn.name
-  const config = merge(BENCHMARK_DEFAULTS, { fn, name, [IS_BENCHMARK_KEY]: true })
-  return fromConfig(config)
-}
+const fromFunction = fn => fromConfig({
+  fn,
+  name: fn.name === '' ? DEFAULT_FN_NAME : fn.name,
+  [IS_BENCHMARK_KEY]: true
+})
 
 export const benchmark = input => {
   if (isBenchmark(input)) {
@@ -40,8 +40,10 @@ const toBenchmarkOrSuite = input => {
   throw new TypeError(`expected suite, benchmark or function, got ${input} of type ${typeof input} instead`)
 }
 
-const fromBenchmarksOrSuites = children => fromConfig(
-  merge(SUITE_DEFAULTS, { children, [IS_SUITE_KEY]: true })
-)
+const fromBenchmarksOrSuites = children => fromConfig({
+  name: DEFAULT_SUITE_NAME,
+  children,
+  [IS_SUITE_KEY]: true
+})
 
 export const suite = (...input) => fromBenchmarksOrSuites(input.map(toBenchmarkOrSuite))

@@ -27,11 +27,14 @@ const runRepeatedly = ({ fn, until, now, args }) => {
 }
 
 const augmentConfig = input => {
-  const { now, name, until } = configOf(input)
+  const { now, name, until, initialize, before, after } = configOf(input)
   return extendConfig(input, {
     now: isDefined(now) ? now : defaultNow,
     name: isDefined(name) ? name : 'unknown',
-    until: isDefined(until) ? until : milliseconds(5000)
+    until: isDefined(until) ? until : milliseconds(5000),
+    before: isDefined(before) ? before : () => { /* default before */ },
+    after: isDefined(after) ? after : () => { /* default after */ },
+    initialize: isDefined(initialize) ? initialize : () => [/* default init */]
   })
 }
 
@@ -52,10 +55,13 @@ const runBenchmark = input => {
 
 const runSuite = input => {
   const parentConfig = configOf(input)
+  //console.log('parentConfig', Object.keys(parentConfig))
   const { children } = parentConfig
   const results = children.map(child => {
     const originalChildConfig = configOf(child)
+    //console.log('originalChildConfig', Object.keys(originalChildConfig))
     extendConfig(child, omit(parentConfig, 'name', 'isSuite', 'children'), originalChildConfig)
+    //console.log('originalChildConfig', Object.keys(configOf(child)))
     const childResults = run(child)
     return omit(merge(configOf(child), childResults), ...FUNCTION_FIELDS)
   })

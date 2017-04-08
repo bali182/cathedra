@@ -3,7 +3,7 @@ import { configOf, isBenchmark } from '../src/common'
 
 describe('wrapping benchmarks', () => {
   const a = () => { /* empty */ }
-  
+
   it('should recognize as benchmark after wrapping', () => {
     const bench = benchmark(a)
     const isBenchRecognized = isBenchmark(bench)
@@ -18,23 +18,23 @@ describe('wrapping benchmarks', () => {
     const config = configOf(bench)
 
     expect(config.name).toBe('a')
-    expect(typeof config.before).toBe('function')
-    expect(typeof config.after).toBe('function')
-    expect(typeof config.initialize).toBe('function')
+    expect(config.before).toBeUndefined()
+    expect(config.after).toBeUndefined()
+    expect(config.initialize).toBeUndefined()
     expect(config.fn).toBe(a)
     expect(config.isBenchmark).toBe(true)
   })
 
   it('should extend/override config on subsequent calls', () => {
-    const firstAddition = { x: 1 }
-    const secondAddition = { foo: 'bar', name: 'foo' }
+    const firstAddition = { x: 1, before: () => { /* empty */ } }
+    const secondAddition = { foo: 'bar', name: 'foo', initialize: () => [] }
     const thirdAddition = { fn: () => { /* empty */ }, name: 'test' }
 
     const bench = benchmark(a)(firstAddition)(secondAddition)(thirdAddition)
     const config = configOf(bench)
 
     expect(typeof config.before).toBe('function')
-    expect(typeof config.after).toBe('function')
+    expect(config.after).toBeUndefined()
     expect(typeof config.initialize).toBe('function')
     expect(config.isBenchmark).toBe(true)
 
