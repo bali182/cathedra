@@ -1,4 +1,4 @@
-import { benchmark } from '../src/benchmark'
+import benchmark from '../src/benchmark'
 import { milliseconds } from '../src/common'
 
 describe('running benchmarks', () => {

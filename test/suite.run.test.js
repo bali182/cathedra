@@ -1,4 +1,5 @@
-import { suite, benchmark } from '../src/benchmark'
+import benchmark from '../src/benchmark'
+import suite from '../src/suite'
 import { milliseconds } from '../src/common'
 
 describe('running suites', () => {

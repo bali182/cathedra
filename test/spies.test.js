@@ -1,4 +1,5 @@
-import { benchmark, suite } from '../src/benchmark'
+import benchmark from '../src/benchmark'
+import suite from '../src/suite'
 import { operations } from '../src/common'
 
 describe('function calls with spies', () => {

@@ -1,4 +1,5 @@
-import { suite, benchmark } from '../src/benchmark'
+import benchmark from '../src/benchmark'
+import suite from '../src/suite'
 import { configOf, isSuite, isBenchmark } from '../src/common'
 
 describe('wrapping suites', () => {
