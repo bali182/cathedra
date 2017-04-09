@@ -1,5 +1,5 @@
 import run from './run'
-import { extendConfig, configOf, merge, assert, isObject } from './common'
+import { initConfig, configOf, merge, assert, isObject } from './common'
 
 const fromConfig = config => {
   const runnable = (...args) => {
@@ -10,7 +10,7 @@ const fromConfig = config => {
       return fromConfig(merge(configOf(runnable), ...args))
     }
   }
-  return extendConfig(runnable, config)
+  return initConfig(runnable, config)
 }
 
 export default fromConfig

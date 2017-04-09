@@ -41,15 +41,15 @@ export const isBenchmark = hasConfigKey(IS_BENCHMARK_KEY)
 
 export const isSuite = hasConfigKey(IS_SUITE_KEY)
 
-export const extendConfig = (input, ...configs) => {
-  if (isFunction(input)) {
-    const config = configOf(input) || {}
-    const newConfig = merge(config, ...configs)
-    input[CATHEDRA_CONFIG] = newConfig
-    return input
-  } else {
+export const initConfig = (input, ...configs) => {
+  if (!isFunction(input)) {
     throw new TypeError(`expected function, got ${input} instead`)
   }
+  if (isDefined(configOf(input))) {
+    throw new Error(`input is already either a benchmark or a suite`)
+  }
+  input[CATHEDRA_CONFIG] = merge(...configs)
+  return input
 }
 
 export const omit = (object, ...keys) => {

@@ -1,4 +1,4 @@
-import { benchmark, suite, isBenchmark, isSuite, times, milliseconds, configOf } from '../index'
+import { benchmark, suite, isBenchmark, isSuite, times, milliseconds } from '../index'
 
 describe('sanity check on build output', () => {
   const noop = () => { /* empty */ }
@@ -41,12 +41,5 @@ describe('sanity check on build output', () => {
     expect(typeof times(100)).toBe('function')
     expect(times(100)(0, 0, 0)).toBe(true)
     expect(times(100)(101, 0, 0)).toBe(false)
-  })
-
-  it('should have configOf', () => {
-    expect(typeof configOf).toBe('function')
-    expect(configOf(100)).toBeUndefined()
-    expect(typeof configOf(benchmark(noop))).toBe('object')
-    expect(typeof configOf(suite(noop))).toBe('object')
   })
 })
