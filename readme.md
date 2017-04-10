@@ -4,7 +4,7 @@ A javascript microbenchmarking tool.
 
 ## Installation
 
-You'll need all 3 of these, thrust me.
+You'll need all 3 of these, trust me.
 
 ```
 npm i -D cathedra cathedra-default-presenter cathedra-cli
