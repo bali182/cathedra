@@ -1,4 +1,4 @@
-# cathedra [![Build Status](https://travis-ci.org/bali182/cathedra.svg?branch=master)](https://travis-ci.org/bali182/cathedra)
+# cathedra [![Build Status](https://travis-ci.org/bali182/cathedra.svg?branch=master)](https://travis-ci.org/bali182/cathedra) [![npm version](https://badge.fury.io/js/cathedra.svg)](https://badge.fury.io/js/cathedra)
 
 A javascript microbenchmarking tool.
 
