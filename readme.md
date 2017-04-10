@@ -96,4 +96,4 @@ The full list of configurations that you can supply to either a `suite` or a `be
 Since `"cathedra"` was the only chair-like synonym to `bench` on [thesaurus.com](http://www.thesaurus.com/browse/bench?s=t) that wasn't an npm package already, I took it. 
 
 ## Contributing
-Feel free to open an issue if you are missing a feature, or send a pull request. In the case of a PR, make sure the tests (`npm test`) and the linter (`npm run lint`) are running ok. If you add new features or modify existing ones, please add new tests as well which covers all the cases you can think of related the new features. It's also not a bad thing if the build passes (`npm run build`) :wink:
+Feel free to open an issue if you are missing a feature, or find a bug. PRs are also welcome in both cases - in this case make sure the tests (`npm test`) and the linter (`npm run lint`) are running ok. If you add new features or modify existing ones, please add new tests as well.
