@@ -57,7 +57,6 @@ const exampleSuiteWith3000ms = suite(fooBench, doBar, doFooBar)({
 
 // This suite overrides until and name from the other suite, but has the same
 // children (fooBench, doBar, and doFooBar) and leaves until in fooBench intact. 
-
 const exampleWith5000ms = exampleSuiteWith3000ms({
   until: milliseconds(5000),
   name: 'example with 5000 ms'
@@ -68,6 +67,8 @@ module.exports = suite(
   exampleWith5000ms
 )
 ```
+
+### Configuration options
 
 The full list of configurations that you can supply to either a `suite` or a `benchmark`
 
