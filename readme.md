@@ -4,6 +4,8 @@ A javascript microbenchmarking tool.
 
 ## Installation
 
+You'll need all 3 of these, thrust me.
+
 ```
 npm i -D cathedra cathedra-default-presenter cathedra-cli
 ```
@@ -33,11 +35,11 @@ Save this as `bench.js` and run it using the following command (either put this 
 cathedra bench.js
 ```
 
-The `cathedra` command accepts a glob pattern so, you can have an array full of benchmarks if you want, this will run them all.
+The `cathedra` command accepts a glob pattern. If you would supply it the `benchmarks/*.js` pattern, it would try to run all of the javascript files in the benchmark folder.
 
 ### Configuration
 
-Once you created a `suite` or a `benchmark` you can configure it by currying as many times as you want. Each new call will return a clean instance with the merged configuration, so you won't modify the previous ones. This is great for sharing configuration. Configuration from suites are passed down to children (`benchmark`s  or other `suite`s) *only* if the given configuration is not specified in a child. This means that configuration from high up is only used lower in the tree of `suite`s and `benchmark`s if the given configuration is not specified.
+Once you created a `suite` or a `benchmark` you can configure it by currying as many times as you want. Each new call will return a clean instance with the merged configuration, so you won't modify the previous ones. This is great for sharing configuration. Configuration from `suite`s are passed down to children (`benchmark`s  or other `suite`s) *only* if the given configuration is not specified ("overriden") in the children.
 
 ```js
 const { suite, benchmark, milliseconds } = require('cathedra')
@@ -45,21 +47,26 @@ const { doFoo, doBar, doFooBar } = require('./costlyFunctions')
 
 const fooBench = benchmark(foo)({
   name: 'foo',
-  until: milliseconds(2500) // This overrides the config coming from the suite
-})({
-  before: () => console.log('executing foo!')
+  until: milliseconds(2500) // The most specific config always wins
 })
 
-const exampleSuite = suite(
-  fooBench,
-  doBar,
-  doFooBar
-)({
-  until: milliseconds(3000), // All benchmarks run for 3000 ms unless foo
+const exampleSuiteWith3000ms = suite(fooBench, doBar, doFooBar)({
+  until: milliseconds(3000), // All benchmarks run for 3000 ms except fooBench
   name: 'example'
 })
 
-module.exports = bench
+// This suite overrides until and name from the other suite, but has the same
+// children (fooBench, doBar, and doFooBar) and leaves until in fooBench intact. 
+
+const exampleWith5000ms = exampleSuiteWith3000ms({
+  until: milliseconds(5000),
+  name: 'example with 5000 ms'
+})
+
+module.exports = suite(
+  exampleSuite,
+  exampleWith5000ms
+)
 ```
 
 The full list of configurations that you can supply to either a `suite` or a `benchmark`
