@@ -41,6 +41,7 @@ describe('wrapping suites', () => {
     expect(children.length).toBe(3)
     expect(children.map(isBenchmark)).toEqual([true, true, true])
     expect(children.map(configOf).map(({ fn }) => fn)).toEqual([a, b, c])
+    expect(children.map(configOf).map(({ name }) => name)).toEqual([a, b, c].map(fn => fn.name))
   })
 
   it('should extend/override config on subsequent calls', () => {

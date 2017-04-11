@@ -53,7 +53,10 @@ describe('immutablilty check', () => {
     const fooConfig = { initialize: () => [43] }
     const barConfig = { until: times(1), }
 
-    const abSuite = suite(a, b)(abConfig)
+    const abSuite = suite(
+      benchmark(a)({ name: 'a' }),
+      benchmark(b)({ name: 'b' }),
+    )(abConfig)
     const fooSuite = abSuite(fooConfig)
     const barSuite = abSuite(barConfig)
 
@@ -69,8 +72,8 @@ describe('immutablilty check', () => {
 
     // Check if suite doesn't mutate config neither on construction, nor on run
     allChildren.forEach(([aBench, bBench]) => {
-      expect(configOf(aBench)).toEqual({ fn: a, name: 'unknown function', isBenchmark: true })
-      expect(configOf(bBench)).toEqual({ fn: b, name: 'unknown function', isBenchmark: true })
+      expect(configOf(aBench)).toEqual({ fn: a, name: 'a', isBenchmark: true })
+      expect(configOf(bBench)).toEqual({ fn: b, name: 'b', isBenchmark: true })
     })
 
     // Check if parent config was still successfully passed down and considered during execution
