@@ -9,7 +9,7 @@
     "package.json"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.js",
+    "build": "rollup -c rollup.config.js && node removeBlankLines index.js",
     "lint": "eslint **/*.js --config .eslintrc",
     "test": "jest --no-cache",
     "prepublish": "npm run lint && npm run build && npm test",
